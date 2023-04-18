@@ -10,7 +10,8 @@ const Quizz = () => {
   const [question, setQuestions] = useState("")
   const [maxQuestion, setMaxQuestions] = useState(10)
   const [storedQuestion, setStoredQuestions] = useState([]);
-  const [answers, setAnswers] = useState([]);
+  const [answers, setAnswers] = useState("");
+  const [BtnDisabled, setBtnDisabled] = useState(true)
 
   const lodalLevelName = level => QuizzMarvel[0].quizz[level]
  
@@ -21,19 +22,28 @@ const Quizz = () => {
 
   console.log(storedQuestion[indexLevel])
 
+  const handleMouse = (e) => {
+    setAnswers(e.target.innerText);
+    setBtnDisabled(false)
+    e.target.classList.add('selectAnswer')
+  }
+
   return (
     <div>
       <Level  />
       <ProgressBar question={indexLevel + 1} />
       <h2>{storedQuestion[indexLevel]?.question}</h2>
       {
-        storedQuestion[indexLevel]?.options.map(option => {
+        storedQuestion[indexLevel]?.options.map((option, index) => {
           return(
-            <div className="answerOptions">{option}</div>
+            <div 
+              onClick={handleMouse} 
+              className={`answerOptions ${answers === option && "selectAnswer"}`}
+            >{option}</div>
           )
         })
       }
-      <button className="btnSubmit" onClick={()=>{setIndexLevel(indexLevel + 1)}}>Suivant</button>
+      <button disabled={BtnDisabled} className="btnSubmit" onClick={()=>{setIndexLevel(indexLevel + 1)}}>Suivant</button>
     </div>
   )
 }
