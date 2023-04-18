@@ -11,7 +11,9 @@ const Quizz = () => {
   const [maxQuestion, setMaxQuestions] = useState(10)
   const [storedQuestion, setStoredQuestions] = useState([]);
   const [answers, setAnswers] = useState("");
-  const [BtnDisabled, setBtnDisabled] = useState(true)
+  const [BtnDisabled, setBtnDisabled] = useState(true);
+  const [score, setScore] = useState(0);
+  const [errMessage, seteErrMessage] = useState('')
 
   const lodalLevelName = level => QuizzMarvel[0].quizz[level]
  
@@ -28,22 +30,33 @@ const Quizz = () => {
     e.target.classList.add('selectAnswer')
   }
 
+  const handleSubmitAnswer = (e) => {    
+    if(answers === storedQuestion[indexLevel].answer){
+      setIndexLevel(indexLevel + 1);
+      setScore(score + 1);
+    }else{
+      seteErrMessage('Mauvaise Réponses')
+    }
+  }
+
   return (
     <div>
       <Level  />
-      <ProgressBar question={indexLevel + 1} />
+      <ProgressBar question={indexLevel + 1} percent={(score * 100) / 10} />
       <h2>{storedQuestion[indexLevel]?.question}</h2>
+      <div className="failureMsg">{errMessage}</div>
       {
         storedQuestion[indexLevel]?.options.map((option, index) => {
           return(
             <div 
+              key={index}
               onClick={handleMouse} 
               className={`answerOptions ${answers === option && "selectAnswer"}`}
             >{option}</div>
           )
         })
       }
-      <button disabled={BtnDisabled} className="btnSubmit" onClick={()=>{setIndexLevel(indexLevel + 1)}}>Suivant</button>
+      <button disabled={BtnDisabled} className="btnSubmit" onClick={handleSubmitAnswer}>Suivant</button>
     </div>
   )
 }
