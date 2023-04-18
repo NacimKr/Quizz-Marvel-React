@@ -34,8 +34,7 @@ const Quizz = () => {
     if(answers === storedQuestion[indexLevel].answer){
       setIndexLevel(indexLevel + 1);
       setScore(score + 1);
-    }else{
-      seteErrMessage('Mauvaise Réponses')
+      setBtnDisabled(true)
     }
   }
 
