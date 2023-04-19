@@ -37,7 +37,7 @@ const Quizz = () => {
     setAnswers(e.target.innerText);
     setBtnDisabled(false)
     e.target.classList.add('selectAnswer')
-    
+
   }
 
 
@@ -92,7 +92,6 @@ const Quizz = () => {
               levels={levelNames} 
               levelQuizz={levelQuizz}  
             />
-            <button onClick={()=>loadLevels()}>Next</button>
             <ProgressBar 
               question={indexLevel + 1} 
               percent={(indexLevel * 100) / 10} 
