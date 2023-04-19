@@ -50,7 +50,7 @@ const Welcome = () => {
                     onMouseOver={()=>handleOver(btnOverConnexion)}
                     onMouseOut={()=>handleMouseOut()} 
                     to="/connect" 
-                    className="btn-welcome">Jouer au Quizz</Link>
+                    className="btn-welcome">Aller au Quizz</Link>
             </div>
             <div className="rightBox">
                 <Link 
