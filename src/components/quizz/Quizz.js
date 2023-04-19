@@ -18,13 +18,15 @@ const Quizz = () => {
   const [score, setScore] = useState(0);
   const [errMessage, seteErrMessage] = useState('')
   const [endQuizz, setEndQuizz] = useState(false);
+  const [levelQuizz, setLevelQuizz] = useState(0);
 
   const lodalLevelName = level => QuizzMarvel[0].quizz[level]
  
   useEffect(()=> {
-    const fetchedArrayQuizz = lodalLevelName(levelNames[indexLevel])
+    const fetchedArrayQuizz = lodalLevelName(levelNames[levelQuizz])
     setStoredQuestions(fetchedArrayQuizz)
-  },[])
+    
+  },[levelQuizz])
 
   const handleMouse = (e) => {
     setAnswers(e.target.innerText);
@@ -50,8 +52,8 @@ const Quizz = () => {
     setIndexLevel(indexLevel + 1);
 
     if(indexLevel + 1 === 10){
-      console.log("over quizz")
-      setEndQuizz(true)
+      console.log("over quizz");
+      setEndQuizz(true);
     }
   }
 
@@ -62,6 +64,15 @@ const Quizz = () => {
     })
   },[]);
 
+  const loadLevels = () => {
+    setLevelQuizz(levelQuizz + 1);
+    setStoredQuestions(lodalLevelName(levelNames[levelQuizz + 1]))
+    setEndQuizz(false);
+    setIndexLevel(0)
+
+    console.log(storedQuestion)
+  }
+
 
   return (
     <>
@@ -71,7 +82,8 @@ const Quizz = () => {
           <ToastContainer
             autoClose={1000}
           />
-          <Level level={levelNames[0]}  />
+          <Level level={levelNames[levelQuizz]}  />
+          <button onClick={()=>loadLevels()}>Next</button>
           <ProgressBar question={indexLevel + 1} percent={(indexLevel * 100) / 10} />
           <h2>{storedQuestion[indexLevel]?.question}</h2>
           <div className="failureMsg">{errMessage}</div>
@@ -92,6 +104,7 @@ const Quizz = () => {
           <QuizzOver 
             allQuestions={storedQuestion} 
             score={score} 
+            nextLevels={()=>loadLevels()}
           />
       }
     </>

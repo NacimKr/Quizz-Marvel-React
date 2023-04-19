@@ -15,12 +15,16 @@ const QuizzOver = (props) => {
             <div className={showConditionColor("failureMsg","successMsg")}>
                 {showConditionColor("revoyez vos classiques","Bravo, Vous êtes un expert")}
             </div>
-            <Link to={showConditionColor("/connect","Niveau Suivant")} className={props.score < 5 ? "failure" : "success"}>
+            <Link 
+                to={showConditionColor("/connect","/connect")} 
+                className={props.score < 5 ? "failure" : "success"}
+                onClick={props.nextLevels}
+            >
                 {showConditionColor("Retenter le Quizz","Niveau Suivant")}
             </Link>
         </div>
         <div className="percentage">
-            <div className="progressPercent">Réussite: {(props.score * 10) / 100}%</div>
+            <div className="progressPercent">Réussite: {(props.score * 100) / 10}%</div>
             <div className="progressPercent">Note: {props.score}/10</div>
         </div>
         <hr />
@@ -33,7 +37,7 @@ const QuizzOver = (props) => {
                 <th>Infos</th>
                 </tr>
                 {
-                    props.allQuestions.map(question => {
+                    props.allQuestions?.map(question => {
                         return(
                             <tr>
                                 <td>{question.question}</td>
