@@ -17,6 +17,7 @@ const Quizz = () => {
   const [BtnDisabled, setBtnDisabled] = useState(true);
   const [score, setScore] = useState(0);
   const [errMessage, seteErrMessage] = useState('')
+  const [endQuizz, setEndQuizz] = useState(false);
 
   const lodalLevelName = level => QuizzMarvel[0].quizz[level]
  
@@ -24,8 +25,6 @@ const Quizz = () => {
     const fetchedArrayQuizz = lodalLevelName(levelNames[indexLevel])
     setStoredQuestions(fetchedArrayQuizz)
   },[])
-
-  console.log(storedQuestion[indexLevel])
 
   const handleMouse = (e) => {
     setAnswers(e.target.innerText);
@@ -47,7 +46,13 @@ const Quizz = () => {
         position: toast.POSITION.BOTTOM_RIGHT,
       })
     }
+    
     setIndexLevel(indexLevel + 1);
+
+    if(indexLevel + 1 === 10){
+      console.log("over quizz")
+      setEndQuizz(true)
+    }
   }
 
   useEffect(() => {
@@ -57,32 +62,39 @@ const Quizz = () => {
     })
   },[]);
 
+
   return (
-    <div>
-      <ToastContainer
-        autoClose={1000}
-      />
-      <Level level={levelNames[0]}  />
-      <ProgressBar question={indexLevel + 1} percent={(score * 100) / 10} />
-      <h2>{storedQuestion[indexLevel]?.question}</h2>
-      <div className="failureMsg">{errMessage}</div>
+    <>
       {
-        indexLevel < maxQuestion ?
-        storedQuestion[indexLevel]?.options.map((option, index) => {
-          return(
-            <div 
-              key={index}
-              onClick={handleMouse} 
-              className={`answerOptions ${answers === option && "selectAnswer"}`}
-            >{option}</div>
-          )
-        })
-        : (
-          <QuizzOver score={score} />
-        ) 
+        !endQuizz ?
+          <>
+          <ToastContainer
+            autoClose={1000}
+          />
+          <Level level={levelNames[0]}  />
+          <ProgressBar question={indexLevel + 1} percent={(indexLevel * 100) / 10} />
+          <h2>{storedQuestion[indexLevel]?.question}</h2>
+          <div className="failureMsg">{errMessage}</div>
+          {
+            storedQuestion[indexLevel]?.options.map((option, index) => {
+              return(
+                <div 
+                  key={index}
+                  onClick={handleMouse} 
+                  className={`answerOptions ${answers === option && "selectAnswer"}`}
+                >{option}</div>
+              )
+            })
+          }
+          <button disabled={BtnDisabled} className="btnSubmit" onClick={handleSubmitAnswer}>Suivant</button>
+          </>
+        :
+          <QuizzOver 
+            allQuestions={storedQuestion} 
+            score={score} 
+          />
       }
-      <button disabled={BtnDisabled} className="btnSubmit" onClick={handleSubmitAnswer}>Suivant</button>
-    </div>
+    </>
   )
 }
 

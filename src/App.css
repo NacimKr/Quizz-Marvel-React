@@ -660,6 +660,8 @@ input:checked+.slider:before {
   padding: 9px;
   width: 100%;
   font-size: 15px;
+  display:block;
+  margin:auto;
 }
 
 .btnInfo:hover {
