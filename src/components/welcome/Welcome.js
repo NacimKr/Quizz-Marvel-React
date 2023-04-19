@@ -27,7 +27,7 @@ const Welcome = () => {
   }
 
   const handleOver = (typeBtn) => {
-    if(typeBtn.current.text === "Jouer au Quizz" ){
+    if(typeBtn.current.text === "Aller au Quizz" ){
         setShowClaws({...showClaws, right:false, left:true})
         console.log(showClaws)
     }else if(typeBtn.current.text === "Règles du jeu" ){
