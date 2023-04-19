@@ -7,7 +7,7 @@ const ProgressBar = ({question, percent}) => {
         <div className="progressBarChange" style={{width:percent+"%"}}></div>
       </div>
       <div className="percentage">
-        <div className="progressPercent">Question: {question}/10</div>
+        <div className="progressPercent">Question: {question < 10 ? question : question - 1}/10</div>
         <div className="progressPercent">Progression: {percent}%</div>
       </div>
     </>

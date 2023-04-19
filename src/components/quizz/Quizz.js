@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Level from "../isConnect/level/Level";
 import ProgressBar from "../isConnect/progressBar/ProgressBar";
 import QuizzMarvel from "../../quizzMarvel/quizzMarvel";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import QuizzOver from '../isConnect/quizzover/QuizzOver';
 
 const Quizz = () => {
 
@@ -30,21 +33,41 @@ const Quizz = () => {
     e.target.classList.add('selectAnswer')
   }
 
+
   const handleSubmitAnswer = (e) => {    
     if(answers === storedQuestion[indexLevel].answer){
-      setIndexLevel(indexLevel + 1);
       setScore(score + 1);
       setBtnDisabled(true)
+      toast.success("Bonne réponse +1",{
+        theme: "colored",
+      })
+    }else{
+      toast.error("Mauvaise réponse",{
+        theme: "colored",
+        position: toast.POSITION.BOTTOM_RIGHT,
+      })
     }
+    setIndexLevel(indexLevel + 1);
   }
+
+  useEffect(() => {
+    toast.warn("Bienvenue",{
+      theme: "colored",
+      icon: false
+    })
+  },[]);
 
   return (
     <div>
-      <Level  />
+      <ToastContainer
+        autoClose={1000}
+      />
+      <Level level={levelNames[0]}  />
       <ProgressBar question={indexLevel + 1} percent={(score * 100) / 10} />
       <h2>{storedQuestion[indexLevel]?.question}</h2>
       <div className="failureMsg">{errMessage}</div>
       {
+        indexLevel < maxQuestion ?
         storedQuestion[indexLevel]?.options.map((option, index) => {
           return(
             <div 
@@ -54,6 +77,9 @@ const Quizz = () => {
             >{option}</div>
           )
         })
+        : (
+          <QuizzOver score={score} />
+        ) 
       }
       <button disabled={BtnDisabled} className="btnSubmit" onClick={handleSubmitAnswer}>Suivant</button>
     </div>
